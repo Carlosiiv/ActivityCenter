@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "@Model.Title";
+}
+
+@model Activ
+
+<div class="text-center">
+   <p class="lead"> <a href="/Home"> Home </a> | <a href="/Logout">Logout</a>  </a></p> 
+</div>
+<div class="row">
+<h2 class="col-sm-10 text-left">@Model.Title</h2>
+<hr>
+<div class="col-sm-2">
+@if(ViewBag.Current.UserId == Model.Creator.UserId){
+     <a href="/Cancel/@Model.ActivityId">Delete</a>
+}else{
+
+    <p>Leave a Rating:</p>
+}
+</div>
+</div>
+<br><br>
+<div class="col-sm-10 text-left">
+<h3>If You Enjoyed This Event Please Rate and Look Out For Other Fun Activities</h3>
+
+<h3 class="">Event Coordinator:</h3>
+<p class="lead">@Model.Creator.Name</p>
+
+<h3 class="">Total Participants:</h3>
+<p class="lead">@Model.Participants()</p>
+<h3 class="">Participants:</h3>
+@foreach(var guest in @Model.Users){
+
+    <p class="lead"> @guest.NavigationalUser.Name</p>   
+}
+</div>

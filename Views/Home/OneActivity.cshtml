@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "@Model.Title";
+}
+
+@model Activ
+
+<div class="text-center">
+   <p class="lead"> <a href="/Home"> Home </a> | <a href="/Logout">Logout</a>  </a></p> 
+</div>
+<div class="row">
+<h2 class="col-sm-10 text-left">@Model.Title</h2>
+<hr>
+<div class="col-sm-2">
+@if(ViewBag.Current.UserId == Model.Creator.UserId){
+     <a href="/Cancel/@Model.ActivityId">Cancel</a>
+}else{
+
+    
+        @if(Model.Users.All( u => u.NavigationalUser.UserId != ViewBag.Current.UserId)){
+             <a href="/Join/@Model.ActivityId">Join</a>
+        }else{
+            <a href="/Leave/@Model.ActivityId">Leave</a>
+}}
+</div>
+</div>
+<br><br>
+<div class="col-sm-10 text-left">
+<h3>When:</h3>
+<p class="lead">@Model.Date.ToLongDateString()</p>
+<h3>Time:</h3>
+<p class="lead">@Model.Time.ToShortTimeString()</p>
+<h3 class="">Event Coordinator:</h3>
+<p class="lead">@Model.Creator.Name</p>
+<h3 class="">Description:</h3>
+<p class="lead">@Model.Description</p>
+
+<h3 class="">Total Participants:</h3>
+<p class="lead">@Model.Participants()</p>
+<h3 class="">Participants:</h3>
+@foreach(var guest in @Model.Users){
+
+    <p class="lead"> @guest.NavigationalUser.Name</p>   
+
+}
+</div>

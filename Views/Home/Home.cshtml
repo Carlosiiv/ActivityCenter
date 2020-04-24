@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@model User
+<div class="text-center">
+   <p class="lead">Welcome @Model.Name</p> 
+       <p class="lead"><a href="/Home"> Home </a> | <a href="/Logout">Logout</a> </a></p> 
+</div>
+<h1 class="display-4"> Activity Center</h1>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Activity</th>
+        <th>Date & Time</th>
+        <th>Duration</th>
+        <th>Event Coordinator</th>
+        <th># of Participants</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        @foreach(Activ a in ViewBag.AllActivities){
+            @if(DateTime.Now.Date < a.Date.Date){
+
+            <tr>
+                <td><a href="/Activity/@a.ActivityId">@a.Title</a> </td>
+                <td>@a.Date.ToLongDateString() At @a.Time.ToShortTimeString()</td>
+                <td>@a.Duration @a.DurationTimeset</td>
+                <td>@a.Creator.Name</td>
+                <td>@a.Participants()</td>
+                <td>
+                @if(Model.UserId == a.UserId ){
+                    <a href="/Cancel/@a.ActivityId">Cancel</a>
+                }
+                else{
+                    if(Model.Activities.All(oj => oj.ActivityId != a.ActivityId)){
+                        <a href="/Join/@a.ActivityId">RSVP</a>
+                    }
+                    else{
+                        <a href="/Leave/@a.ActivityId">Cancel RSVP</a>
+                    }
+                }
+                </td>
+            </tr> 
+        @* }else{
+            <tr>
+                <td class="text-muted"><a href="/Activity/Complete/@a.ActivityId">@a.Title</a> </td>
+                <td class="text-muted">@a.Date.ToLongDateString() At @a.Time.ToShortTimeString()</td>
+                <td class="text-muted">@a.Duration @a.DurationTimeset</td>
+                <td class="text-muted">@a.Creator.Name</td>
+                <td class="text-muted">@a.Participants()</td>
+                <td class="text-muted">
+                @if(Model.UserId == a.UserId ){
+                    <a href="/Cancel/@a.ActivityId">Cancel</a>
+                }
+                else{
+                    <p>Rating : 5</p>
+                }
+                </td>
+            </tr>
+        } *@
+        }
+        }
+      
+    </tbody>
+  </table>
+  <p class="lead"><a href="/Activity/New">New Activity</a></p>
+</div>
+
